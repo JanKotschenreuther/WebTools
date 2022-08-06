@@ -1,0 +1,25 @@
+﻿@page "/base64"
+@using System.Text
+
+<h3>Base64</h3>
+<input @bind=_clearText placeholder="clear text" />
+<input @bind=_base64 placeholder="base64" />
+<button @onclick=Encode>Encode</button>
+<button @onclick=Decode>Decode</button>
+
+@code {
+    private string _clearText = String.Empty;
+    private string _base64 = String.Empty;
+
+    public void Encode()
+    {
+        var clearTextBytes = Encoding.ASCII.GetBytes(this._clearText);
+        this._base64 = Convert.ToBase64String(clearTextBytes);
+    }
+
+    public void Decode()
+    {
+        var base64Bytes = Convert.FromBase64String(this._base64);
+        this._clearText = Encoding.ASCII.GetString(base64Bytes);
+    }
+}

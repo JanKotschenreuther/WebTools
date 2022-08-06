@@ -2,24 +2,34 @@
 @using System.Text
 
 <h3>Base64</h3>
-<input @bind=_clearText placeholder="clear text" />
-<input @bind=_base64 placeholder="base64" />
-<button @onclick=Encode>Encode</button>
-<button @onclick=Decode>Decode</button>
+<input @bind="_clearText" placeholder="clear text" />
+<input @bind="_base64" placeholder="base64" />
+<button @onclick="Encode">Encode</button>
+<button @onclick="Decode">Decode</button>
+<select @bind="_selectedEncodingCodePage">
+    @foreach (var encoding in _encodings)
+    {
+        <option value="@encoding.CodePage">@encoding.WebName</option>
+    }
+</select>
 
 @code {
     private string _clearText = String.Empty;
     private string _base64 = String.Empty;
+    private Encoding[] _encodings = Encoding.GetEncodings().Select(x => x.GetEncoding()).ToArray();
+    private int _selectedEncodingCodePage = Encoding.UTF8.CodePage;
 
     public void Encode()
     {
-        var clearTextBytes = Encoding.ASCII.GetBytes(this._clearText);
+        var selectedEncoding = Encoding.GetEncoding(this._selectedEncodingCodePage);
+        var clearTextBytes = selectedEncoding.GetBytes(this._clearText);
         this._base64 = Convert.ToBase64String(clearTextBytes);
     }
 
     public void Decode()
     {
         var base64Bytes = Convert.FromBase64String(this._base64);
-        this._clearText = Encoding.ASCII.GetString(base64Bytes);
+        var selectedEncoding = Encoding.GetEncoding(this._selectedEncodingCodePage);
+        this._clearText = selectedEncoding.GetString(base64Bytes);
     }
 }

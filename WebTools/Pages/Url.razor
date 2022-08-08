@@ -1,10 +1,11 @@
-﻿@page "/base64"
+﻿@page "/url"
 @using System.Text
+@using System.Web
 
-<h3>Base64</h3>
+<h3>Url</h3>
 <div>
-    <input @bind="_clearText" placeholder="clear text" />
-    <input @bind="_base64" placeholder="base64" />
+    <input @bind="_decodedUrl" placeholder="clear text" />
+    <input @bind="_encodedUrl" placeholder="base64" />
     <button @onclick="Encode">Encode</button>
     <button @onclick="Decode">Decode</button>
     <select @bind="_selectedEncodingCodePage">
@@ -16,22 +17,20 @@
 </div>
 
 @code {
-    private string _clearText = String.Empty;
-    private string _base64 = String.Empty;
+    private string _decodedUrl = String.Empty;
+    private string _encodedUrl = String.Empty;
     private Encoding[] _encodings = Encoding.GetEncodings().Select(x => x.GetEncoding()).ToArray();
     private int _selectedEncodingCodePage = Encoding.UTF8.CodePage;
 
     public void Encode()
     {
         var selectedEncoding = Encoding.GetEncoding(this._selectedEncodingCodePage);
-        var clearTextBytes = selectedEncoding.GetBytes(this._clearText);
-        this._base64 = Convert.ToBase64String(clearTextBytes);
+        this._encodedUrl = HttpUtility.UrlEncode(this._decodedUrl, selectedEncoding) ?? String.Empty;
     }
 
     public void Decode()
     {
-        var base64Bytes = Convert.FromBase64String(this._base64);
         var selectedEncoding = Encoding.GetEncoding(this._selectedEncodingCodePage);
-        this._clearText = selectedEncoding.GetString(base64Bytes);
+        this._decodedUrl = HttpUtility.UrlDecode(this._encodedUrl, selectedEncoding) ?? String.Empty;
     }
 }

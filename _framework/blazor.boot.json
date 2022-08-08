@@ -36,7 +36,8 @@
       "System.Runtime.dll": "sha256-OzAqQ5fREJf1RzycCZaeW8mwcKd8xkT3bR6zzzzLKqQ=",
       "System.Text.Encodings.Web.dll": "sha256-aGUUYYpDQhPFrY64BhZ+S8grJfGPYHypREN3r\/I+Duk=",
       "System.Text.Json.dll": "sha256-VMpyZrWL6amV4hoQYwC8Zkk8\/hkjjKSeSmM4TAqs0fE=",
-      "WebTools.dll": "sha256-ML5ihdT1XYpDavTYTrRiP3FaoFv4qne776UnsEYGNNw="
+      "System.Web.HttpUtility.dll": "sha256-V7l\/lrIgREuR7W+4fNEfUhZBMEcmRtb3507PEjgFarI=",
+      "WebTools.dll": "sha256-U7WDw6AiEbdhjasnoemLbA1V9lKk03IftQvaIV8mrJE="
     },
     "extensions": null,
     "lazyAssembly": null,

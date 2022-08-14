@@ -1,0 +1,20 @@
+﻿@page "/qrcode"
+@using ZXing
+
+<h3>QrCode</h3>
+
+<div>
+    <input @bind="_clearText" placeholder="clear text" />
+    <button @onclick="Encode">Encode</button>
+    <Barcode @ref="_barcode" TextToEncode="@_clearText" Format="BarcodeFormat.QR_CODE"></Barcode>
+</div>
+
+@code {
+    private Barcode? _barcode;
+    private string _clearText = String.Empty;
+
+    private void Encode()
+    {
+        this._barcode?.Rerender();
+    }
+}

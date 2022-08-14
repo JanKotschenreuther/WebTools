@@ -1,0 +1,45 @@
+﻿@using SkiaSharp
+@using SkiaSharp.Views.Blazor
+@using ZXing
+@using ZXing.SkiaSharp
+
+<SKCanvasView @ref="_canvasView" OnPaintSurface="PaintSurface" width="200" height="200"></SKCanvasView>
+
+@code {
+    private SKCanvasView? _canvasView;
+
+    [Parameter]
+    public string TextToEncode { get; set; } = String.Empty;
+    [Parameter]
+    public BarcodeFormat Format { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        //this._canvasView?.Invalidate();
+        await base.OnParametersSetAsync();
+    }
+
+    public void PaintSurface(SKPaintSurfaceEventArgs e)
+    {
+        if (String.IsNullOrWhiteSpace(this.TextToEncode))
+        {
+            return;
+        }
+
+        var canvas = e.Surface.Canvas;
+
+        var barcodeWriter = new BarcodeWriter()
+            {
+                Format = BarcodeFormat.QR_CODE,
+            };
+        var bitMatrix = barcodeWriter.Encode(TextToEncode);
+        var bitmap = barcodeWriter.Renderer.Render(bitMatrix, barcodeWriter.Format, null);
+
+        canvas.DrawBitmap(bitmap, new SKPoint(0, 0));
+    }
+
+    public void Rerender()
+    {
+        this._canvasView?.Invalidate();
+    }
+}

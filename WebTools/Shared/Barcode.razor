@@ -3,7 +3,7 @@
 @using ZXing
 @using ZXing.SkiaSharp
 
-<SKCanvasView @ref="_canvasView" OnPaintSurface="PaintSurface" width="200" height="200"></SKCanvasView>
+<SKCanvasView @ref="_canvasView" OnPaintSurface="PaintSurface" width="@Width" height="@Height"></SKCanvasView>
 
 @code {
     private SKCanvasView? _canvasView;
@@ -12,6 +12,10 @@
     public string TextToEncode { get; set; } = String.Empty;
     [Parameter]
     public BarcodeFormat Format { get; set; }
+    [Parameter]
+    public int Width { get; set; } = 200;
+    [Parameter]
+    public int Height { get; set; } = 200;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -26,15 +30,15 @@
             return;
         }
 
-        var canvas = e.Surface.Canvas;
+        var barcodeWriter = new BarcodeWriter();
+        barcodeWriter.Format = BarcodeFormat.QR_CODE;
+        barcodeWriter.Options.Width = Width;
+        barcodeWriter.Options.Height = Height;
 
-        var barcodeWriter = new BarcodeWriter()
-            {
-                Format = BarcodeFormat.QR_CODE,
-            };
         var bitMatrix = barcodeWriter.Encode(TextToEncode);
-        var bitmap = barcodeWriter.Renderer.Render(bitMatrix, barcodeWriter.Format, null);
+        var bitmap = barcodeWriter.Renderer.Render(bitMatrix, barcodeWriter.Format, TextToEncode);
 
+        var canvas = e.Surface.Canvas;
         canvas.DrawBitmap(bitmap, new SKPoint(0, 0));
     }
 

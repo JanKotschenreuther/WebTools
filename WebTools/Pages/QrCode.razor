@@ -1,17 +1,27 @@
 ﻿@page "/qrcode"
-@using ZXing
+@using ZXing;
 
-<h3>QrCode</h3>
+<PageTitle>QrCode</PageTitle>
 
 <div>
-    <input @bind="_clearText" placeholder="clear text" />
-    <button @onclick="Encode">Encode</button>
-    <Barcode @ref="_barcode" TextToEncode="@_clearText" Format="BarcodeFormat.QR_CODE"></Barcode>
+    <textarea @bind="_clearText" placeholder="clear text" cols="100" />
+    <div>
+        <button @onclick="Encode">Encode</button>
+        <input type="range" name="qrCodeSize" on @bind="_qrCodeSize" @oninput="SetSize" min="100" max="1000" step="50" />
+        <label for="qrCodeSize">@_qrCodeSize px</label>
+    </div>
+    <Barcode @ref="_barcode" TextToEncode="@_clearText" Format="BarcodeFormat.QR_CODE" Height="@_qrCodeSize" Width="@_qrCodeSize"></Barcode>
 </div>
 
 @code {
     private Barcode? _barcode;
     private string _clearText = String.Empty;
+    private int _qrCodeSize = 400;
+
+    private void SetSize(ChangeEventArgs e)
+    {
+        _qrCodeSize = Convert.ToInt32(e.Value);
+    }
 
     private void Encode()
     {

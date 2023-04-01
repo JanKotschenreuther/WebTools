@@ -1,18 +1,21 @@
 ﻿@page "/base64"
-@using System.Text
+@using System.Text;
 
-<h3>Base64</h3>
+<PageTitle>Base64</PageTitle>
+
 <div>
-    <input @bind="_clearText" placeholder="clear text" />
-    <input @bind="_base64" placeholder="base64" />
-    <button @onclick="Encode">Encode</button>
-    <button @onclick="Decode">Decode</button>
-    <select @bind="_selectedEncodingCodePage">
-        @foreach (var encoding in _encodings)
-        {
-            <option value="@encoding.CodePage">@encoding.WebName</option>
-        }
-    </select>
+    <textarea @bind="_clearText" placeholder="clear text" cols="100" />
+    <textarea @bind="_base64" placeholder="base64" cols="100" />
+    <div>
+        <button @onclick="Encode">Encode</button>
+        <button @onclick="Decode">Decode</button>
+        <select @bind="_selectedEncodingCodePage">
+            @foreach (var encoding in _encodings)
+            {
+                <option value="@encoding.CodePage">@encoding.WebName</option>
+            }
+        </select>
+    </div>
 </div>
 
 @code {

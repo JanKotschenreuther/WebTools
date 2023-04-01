@@ -1,19 +1,24 @@
 ﻿@page "/url"
-@using System.Text
-@using System.Web
+@using System.Text;
+@using System.Web;
 
-<h3>Url</h3>
+<PageTitle>Url</PageTitle>
+
 <div>
-    <input @bind="_decodedUrl" placeholder="clear text" />
-    <input @bind="_encodedUrl" placeholder="base64" />
-    <button @onclick="Encode">Encode</button>
-    <button @onclick="Decode">Decode</button>
-    <select @bind="_selectedEncodingCodePage">
-        @foreach (var encoding in _encodings)
-        {
-            <option value="@encoding.CodePage">@encoding.WebName</option>
-        }
-    </select>
+    <textarea @bind="_decodedUrl" placeholder="Decoded" cols="100" />
+    <textarea @bind="_encodedUrl" placeholder="Encoded" cols="100" />
+    <div>
+        <button @onclick="Encode">Encode</button>
+        <button @onclick="Decode">Decode</button>
+        <select @bind="_selectedEncodingCodePage">
+            @foreach (var encoding in _encodings)
+            {
+                <option value="@encoding.CodePage">@encoding.WebName</option>
+            }
+        </select>
+        <label for="usePlus">Use +</label>
+        <input @bind="_usePlus" name="usePlus" type="checkbox"/>
+    </div>
 </div>
 
 @code {
@@ -21,11 +26,13 @@
     private string _encodedUrl = String.Empty;
     private Encoding[] _encodings = Encoding.GetEncodings().Select(x => x.GetEncoding()).ToArray();
     private int _selectedEncodingCodePage = Encoding.UTF8.CodePage;
+    private bool _usePlus = false;
 
     public void Encode()
     {
         var selectedEncoding = Encoding.GetEncoding(this._selectedEncodingCodePage);
-        this._encodedUrl = HttpUtility.UrlEncode(this._decodedUrl, selectedEncoding) ?? String.Empty;
+        var encodedUrl = HttpUtility.UrlEncode(this._decodedUrl, selectedEncoding) ?? String.Empty;
+        this._encodedUrl = this._usePlus ? encodedUrl : encodedUrl.Replace("+", "%20");
     }
 
     public void Decode()

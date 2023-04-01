@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.7" PrivateAssets="all" />
-    <PackageReference Include="SkiaSharp" Version="2.88.0" />
-    <PackageReference Include="SkiaSharp.Views.Blazor" Version="2.88.0" />
-    <PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.4" PrivateAssets="all" />
+    <PackageReference Include="SkiaSharp" Version="2.88.3" />
+    <PackageReference Include="SkiaSharp.Views.Blazor" Version="2.88.3" />
+    <PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.13" />
   </ItemGroup>
 
 </Project>

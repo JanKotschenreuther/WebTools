@@ -7,7 +7,7 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "Microsoft.AspNetCore.Components.dll": "sha256-CaILpTVoTLfJ8voCD6XISFYm3SjvcXQgDZP4piW3vU4=",
+      "Microsoft.AspNetCore.Components.dll": "sha256-Ry+R9P6riCTjx\/a42oSLrTZV6k2JwxDoIQzZzBWnC10=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-CQuaWrSf9O4PtndknsO4wfnA0I\/ky0YyY8JXhqrKtcc=",
       "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-jZLGUNi\/PCnw9q3fv9CISkfeqzfFrPm143LIAsZYEO4=",
       "Microsoft.Extensions.Configuration.Abstractions.dll": "sha256-X\/f4fDl2cuIRXeWHhK\/f2UqQbFioD+RU4a4CEh0zrrQ=",
@@ -42,7 +42,7 @@
       "System.Text.RegularExpressions.dll": "sha256-nKjvCFuLebAg2pwxaBLQnHvaguG6KW+dkDMyImMXHwI=",
       "System.Threading.dll": "sha256-YXkQ0icX9P9W\/QFe\/KRZ0\/7Vjd62P8f129kJHnrPyMo=",
       "System.Web.HttpUtility.dll": "sha256-D2mVosuxRX\/dNg5waxEOP+RVDZT3+qwp1BvOb37\/S1U=",
-      "WebTools.dll": "sha256-qd3PxrpodvNaVJygz3CMuJSYyAvhfxVb93tsUFAaVrY=",
+      "WebTools.dll": "sha256-C\/hg99Oxk5osLNX53sXflE1HpiJzGoAZQcVhGm45fUI=",
       "zxing.dll": "sha256-jSFs1kEwsLRUjHGAlatJX+N\/SU4fGJ5Q1v1zHLPDSek=",
       "ZXing.SkiaSharp.dll": "sha256-unCUVCmCCKj5hJBzSV3KcREXU613h7JmQ1utKlSm\/f4="
     },

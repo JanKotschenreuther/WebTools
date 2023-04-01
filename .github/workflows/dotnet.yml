@@ -28,12 +28,12 @@ jobs:
     - name: Publish
       run: dotnet publish -c Release
     - name: Change base-tag in index.html from "/" to "WebTools"
-      run: sed -i 's/<base href="\/" \/>/<base href="\/WebTools\/" \/>/g' WebTools/bin/Release/net6.0/publish/wwwroot/index.html
+      run: sed -i 's/<base href="\/" \/>/<base href="\/WebTools\/" \/>/g' WebTools/bin/Release/net7.0/publish/wwwroot/index.html
     - name: Add link to favicon.ico
-      run: sed -i '\|<base href="\/WebTools\/" \/>|a\    <link rel="shortcut icon" href=".\/favicon.ico">' WebTools/bin/Release/net6.0/publish/wwwroot/index.html
+      run: sed -i '\|<base href="\/WebTools\/" \/>|a\    <link rel="shortcut icon" href=".\/favicon.ico">' WebTools/bin/Release/net7.0/publish/wwwroot/index.html
     - name: Add .nojekyll file
-      run: touch WebTools/bin/Release/net6.0/publish/wwwroot/.nojekyll
+      run: touch WebTools/bin/Release/net7.0/publish/wwwroot/.nojekyll
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.4.0
       with:
-       folder: WebTools/bin/Release/net6.0/publish/wwwroot
+       folder: WebTools/bin/Release/net7.0/publish/wwwroot

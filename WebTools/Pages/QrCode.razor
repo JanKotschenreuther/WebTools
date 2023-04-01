@@ -1,5 +1,8 @@
 ﻿@page "/qrcode"
+@using SkiaSharp.Views.Blazor
+@using SkiaSharp;
 @using ZXing;
+@using ZXing.SkiaSharp;
 
 <PageTitle>QrCode</PageTitle>
 
@@ -10,13 +13,28 @@
         <input type="range" name="qrCodeSize" on @bind="_qrCodeSize" @oninput="SetSize" min="100" max="1000" step="50" />
         <label for="qrCodeSize">@_qrCodeSize px</label>
     </div>
-    <Barcode @ref="_barcode" TextToEncode="@_clearText" Format="BarcodeFormat.QR_CODE" Height="@_qrCodeSize" Width="@_qrCodeSize"></Barcode>
+    <div>
+        <Barcode @ref="_barcode" TextToEncode="@_clearText" Format="BarcodeFormat.QR_CODE" Height="@_qrCodeSize" Width="@_qrCodeSize"></Barcode>
+    </div>
+    <div>
+        <InputFile OnChange="FileChangeAsync"></InputFile>
+    </div>
+    <div>
+        <SKCanvasView @ref="_canvasView" OnPaintSurface="PaintSurface" width="@(_bitmap?.Width ?? 0)" height="@(_bitmap?.Height ?? 0)"></SKCanvasView>
+    </div>
+    <div>
+        <textarea @bind="_decodedText" placeholder="Decoded" cols="100" />
+    </div>
 </div>
 
 @code {
     private Barcode? _barcode;
     private string _clearText = String.Empty;
     private int _qrCodeSize = 400;
+
+    private SKCanvasView? _canvasView;
+    private SKBitmap? _bitmap;
+    private string _decodedText = String.Empty;
 
     private void SetSize(ChangeEventArgs e)
     {
@@ -26,5 +44,57 @@
     private void Encode()
     {
         this._barcode?.Rerender();
+    }
+
+    private async Task FileChangeAsync(InputFileChangeEventArgs e)
+    {
+        if (e.FileCount > 1)
+        {
+            Console.WriteLine("To many files selected!");
+            return;
+        }
+
+        var allowedContentType = "image/png";
+        if (e.File.ContentType != allowedContentType)
+        {
+            Console.WriteLine($"File ContentType '{e.File.ContentType}' not supported! Pick an image of ContentType {allowedContentType}");
+            return;
+        }
+
+        if (_bitmap != null)
+        {
+            _bitmap.Dispose();
+            _bitmap = null;
+        }
+
+        using var stream = e.File.OpenReadStream();
+        using var memoryStream = new MemoryStream();
+        await stream.CopyToAsync(memoryStream);
+        var byteArray = memoryStream.ToArray();
+
+        this._bitmap = SKBitmap.Decode(byteArray);
+        this._canvasView?.Invalidate();
+
+        var bitmap = this._bitmap;
+        if (bitmap == null)
+        {
+            return;
+        }
+
+        var barcodeReader = new BarcodeReader();
+        var result = barcodeReader.Decode(bitmap);
+        this._decodedText = result?.Text ?? String.Empty;
+    }
+
+    public void PaintSurface(SKPaintSurfaceEventArgs e)
+    {
+        if (this._bitmap == null)
+        {
+            return;
+        }
+
+        var canvas = e.Surface.Canvas;
+        canvas.Clear();
+        canvas.DrawBitmap(this._bitmap, new SKPoint(0, 0));
     }
 }

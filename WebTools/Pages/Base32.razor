@@ -1,0 +1,30 @@
+﻿@page "/base32"
+@using System.Text;
+
+<PageTitle>Base32</PageTitle>
+
+<div>
+    <InputTextArea @bind-Value="_clearText" placeholder="clear text" cols="100" />
+    <InputTextArea @bind-Value="_base32" placeholder="base32" cols="100" />
+    <div>
+        <button @onclick="Encode">Encode</button>
+        <button @onclick="Decode">Decode</button>
+    </div>
+</div>
+
+@code {
+    private string _clearText = String.Empty;
+    private string _base32 = String.Empty;
+
+    public void Encode()
+    {
+        var clearTextBytes = Encoding.UTF8.GetBytes(this._clearText);
+        this._base32 = OtpNet.Base32Encoding.ToString(clearTextBytes);
+    }
+
+    public void Decode()
+    {
+        var clearTextBytes = OtpNet.Base32Encoding.ToBytes(this._base32);
+        this._clearText = Encoding.UTF8.GetString(clearTextBytes);
+    }
+}

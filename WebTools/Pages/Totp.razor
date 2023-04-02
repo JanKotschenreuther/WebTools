@@ -1,0 +1,221 @@
+﻿@page "/totp"
+@using System.Text;
+@using SkiaSharp;
+@using ZXing;
+@using ZXing.SkiaSharp;
+
+<PageTitle>Totp</PageTitle>
+<h3>Totp</h3>
+
+<div>
+    <textarea @bind="_secret" placeholder="secret" cols="100"></textarea>
+    <div>
+        <InputText @bind-Value="_user" DisplayName="User"></InputText>
+        <InputText @bind-Value="_issuer" DisplayName="Issuer"></InputText>
+        <InputSelect @bind-Value="_algorithm" DisplayName="Algorithm">
+            @foreach (var alg in Enum.GetValues<Algorithm>())
+            {
+                <option value="@alg">@alg</option>
+            }
+        </InputSelect>
+        <InputSelect @bind-Value="_digits" DisplayName="Digits">
+            @foreach (var dig in Enum.GetValues<Digits>())
+            {
+                <option value="@dig">@((int)dig)</option>
+            }
+        </InputSelect>
+        <InputNumber @bind-Value="_period" DisplayName="Period"></InputNumber>
+        <InputFile OnChange="FileChangeAsync"></InputFile>
+    </div>
+    <div>
+        <InputTextArea @bind-Value="_uri" DisplayName="QR Code URI" cols="100"></InputTextArea>
+        <Barcode @ref="_barcode" TextToEncode="@_uri" Format="BarcodeFormat.QR_CODE" Height="200" Width="200"></Barcode>
+    </div>
+    <div>
+        <table>
+            <tr>
+                <th>TOTP 6</th>
+                <th>TOTP 8</th>
+                <th>Countdown</th>
+                <th>Period</th>
+                <th>Algorithm</th>
+                <th>UTC Time</th>
+                <th>Time (sec)</th>
+            </tr>
+            @foreach (var group in _entries.GroupBy(e => e.Period))
+            {
+                var period = @group.Key;
+                foreach (var entry in group.ToArray())
+                {
+                    <tr>
+                        <td>@entry.Totp6</td>
+                        <td>@entry.Totp8</td>
+                        <td>@entry.Countdown</td>
+                        <td>@period</td>
+                        <td>@entry.Algorithm.ToString()</td>
+                        <td>@(DateTimeOffset.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"))</td>
+                        <td>@(DateTimeOffset.UtcNow.ToUnixTimeSeconds())</td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+</div>
+
+@code {
+    private string _secret = "12345678901234567890";
+    private string _user = "alice@bob.com";
+    private string _issuer = "FooBar";
+    private Algorithm _algorithm = Algorithm.SHA1;
+    private Digits _digits = Digits.digits_6;
+    private int _period = 30;
+
+    private string? _uri;
+    private Barcode? _barcode;
+
+    private TotpEntry[] _entries = Array.Empty<TotpEntry>();
+
+    private Timer? _timer;
+
+    protected override void OnParametersSet()
+    {
+        _uri = CreateTotpQrCodeUri(_secret, _user, _issuer, _algorithm, _digits, _period).ToString();
+        var entries = TotpUtilities.CreateTotpEntries(_period);
+        TotpUtilities.UpdateTotpEntries(_secret, entries);
+        _entries = entries;
+
+        _timer = new(OnTimer, null, 0, 1000);
+
+        base.OnParametersSet();
+    }
+
+    private void OnTimer(object? state)
+    {
+        var newUri = CreateTotpQrCodeUri(_secret, _user, _issuer, _algorithm, _digits, _period).ToString();
+        if (_uri != newUri)
+        {
+            _uri = newUri;
+            this._barcode?.Rerender();
+        }
+
+        var entries = _entries;
+        if (_period != 30 && _period != 60)
+        {
+            entries = TotpUtilities.CreateTotpEntries(_period);
+        }
+        TotpUtilities.UpdateTotpEntries(_secret, entries);
+
+        _entries = entries;
+        this.StateHasChanged();
+    }
+
+    private Uri CreateTotpQrCodeUri(string secret, string user, string? issuer, Algorithm algorithm = Algorithm.SHA1, Digits digits = Digits.digits_6, int period = 30)
+    {
+        var label = String.IsNullOrWhiteSpace(issuer) ? user : issuer + ":" + user;
+
+        var secretBytes = Encoding.UTF8.GetBytes(secret);
+        var secretBase32 = OtpNet.Base32Encoding.ToString(secretBytes);
+
+        Dictionary<string, string?> parameters = new();
+        parameters.Add("secret", secretBase32);
+        parameters.Add("issuer", issuer);
+        parameters.Add("algorithm", algorithm.ToString());
+        parameters.Add("digits", ((int)digits).ToString());
+        parameters.Add("period", period.ToString());
+
+        var parameterArray = parameters
+            .Where(x => String.IsNullOrWhiteSpace(x.Value) == false)
+            .Select(x => x.Key + "=" + x.Value)
+            .ToArray();
+        string parametersString = String.Join("&", parameterArray);
+
+        var uri = new Uri($"otpauth://totp/{label}?{parametersString}");
+        return uri;
+    }
+
+    private async Task FileChangeAsync(InputFileChangeEventArgs e)
+    {
+        if (e.FileCount > 1)
+        {
+            Console.WriteLine("To many files selected!");
+            return;
+        }
+
+        var allowedContentType = "image/png";
+        if (e.File.ContentType != allowedContentType)
+        {
+            Console.WriteLine($"File ContentType '{e.File.ContentType}' not supported! Pick an image of ContentType '{allowedContentType}'");
+            return;
+        }
+
+        using var stream = e.File.OpenReadStream();
+        using var memoryStream = new MemoryStream();
+        await stream.CopyToAsync(memoryStream);
+        var byteArray = memoryStream.ToArray();
+
+        using var bitmap = SKBitmap.Decode(byteArray);
+        if (bitmap == null)
+        {
+            return;
+        }
+
+        var barcodeReader = new BarcodeReader();
+        var result = barcodeReader.Decode(bitmap);
+        var uriString = result?.Text ?? String.Empty;
+        if (String.IsNullOrWhiteSpace(uriString) == false)
+        {
+            //"otpauth://totp/FooBar:alice@bob.com?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&issuer=FooBar&algorithm=SHA256&digits=6&period=45"
+            var uri = new Uri(uriString);
+            Console.WriteLine(uri);
+            var allowedUriScheme = "otpauth";
+            if (uri.Scheme.Equals(allowedUriScheme, StringComparison.OrdinalIgnoreCase) == false)
+            {
+                Console.WriteLine($"Uri scheme '{uri.Scheme}' not supported! Uri scheme must be '{allowedUriScheme}'");
+                return;
+            }
+
+            var allowedOtpType = "totp";
+            if (uri.Host.Equals(allowedOtpType, StringComparison.OrdinalIgnoreCase) == false)
+            {
+                Console.WriteLine($"Uri host '{uri.Host}' not supported! Uri host must be '{allowedOtpType}'");
+                return;
+            }
+
+            var labelParts = uri.LocalPath.Replace("/", String.Empty).Split(":");
+            var issuer = labelParts.Length >= 2 ? labelParts.First() : null;
+            var user = labelParts.Length >= 2 ? labelParts.Skip(1).First() : labelParts.FirstOrDefault();
+
+            var parameters = uri.Query.Replace("?", String.Empty).Split("&")
+                .Select(parameter => parameter.Split("="))
+                .ToDictionary(x => x.First().ToLowerInvariant(), x => x.Skip(1).First());
+
+            parameters.TryGetValue("secret", out var secret);
+            parameters.TryGetValue("issuer", out issuer);
+            parameters.TryGetValue("algorithm", out var algorithm);
+            parameters.TryGetValue("digits", out var digits);
+            System.Int32.TryParse(digits, out var digitNum);
+            parameters.TryGetValue("period", out var period);
+            var isPeriodNum = System.Int32.TryParse(period, out var periodNum);
+
+            var isAlgEnum = Enum.TryParse<Algorithm>(algorithm, true, out var algorithmEnum);
+            var digitEnum = Enum.GetValues<Digits>().Cast<Digits?>().Where(x => ((int?)x) == digitNum).FirstOrDefault();
+
+            if (String.IsNullOrWhiteSpace(secret) == false)
+            {
+                var clearTextBytes = OtpNet.Base32Encoding.ToBytes(secret);
+                secret = Encoding.UTF8.GetString(clearTextBytes);
+            }
+
+            _secret = secret ?? String.Empty;
+            _user = user ?? String.Empty;
+            _issuer = issuer ?? String.Empty;
+            _algorithm = isAlgEnum ? algorithmEnum : Algorithm.SHA1;
+            _digits = digitEnum ?? Digits.digits_6;
+            _period = isPeriodNum? periodNum: 30;
+            _uri = uri.ToString();
+            this._barcode?.Rerender();
+
+            this.StateHasChanged();
+        }
+    }
+}

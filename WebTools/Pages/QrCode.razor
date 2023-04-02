@@ -57,7 +57,7 @@
         var allowedContentType = "image/png";
         if (e.File.ContentType != allowedContentType)
         {
-            Console.WriteLine($"File ContentType '{e.File.ContentType}' not supported! Pick an image of ContentType {allowedContentType}");
+            Console.WriteLine($"File ContentType '{e.File.ContentType}' not supported! Pick an image of ContentType '{allowedContentType}'");
             return;
         }
 

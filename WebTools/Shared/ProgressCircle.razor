@@ -1,0 +1,47 @@
+﻿<div class="progress-circle" 
+     display-value="@DisplayValue"
+     style="@(("background: conic-gradient(lightgray " + _value + "%, dodgerblue 0deg);"))">
+</div>
+
+@code {
+    private long _value = 50;
+
+    [Parameter]
+    public long Value { get; set; } = 50;
+    [Parameter]
+    public string DisplayValue { get; set; } = String.Empty;
+    [Parameter]
+    public long Min { get; set; } = 0;
+    [Parameter]
+    public long Max { get; set; } = 100;
+
+    protected override void OnParametersSet()
+    {
+        _value = RemapToPercent(Value, Min, Max);
+
+        base.OnParametersSet();
+    }
+
+    private long Remap(long sourceValue, long sourceMin, long sourceMax, long targetMin, long targetMax)
+    {
+        var sourceRange = sourceMax - sourceMin;
+        var targetRange = targetMax - targetMin;
+
+        long targetValue = 0;
+        if (sourceRange == 0)
+        {
+            targetValue = targetMin;
+        }
+        else
+        {
+            targetValue = (((sourceValue - sourceMin) * targetRange) / sourceRange) + targetMin;
+        }
+
+        return targetValue;
+    }
+
+    private long RemapToPercent(long sourceValue, long sourceMin, long sourceMax)
+    {
+        return Remap(sourceValue, sourceMin, sourceMax, 0, 100);
+    }
+}

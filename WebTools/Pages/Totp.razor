@@ -37,6 +37,7 @@
                 <th>TOTP 6</th>
                 <th>TOTP 8</th>
                 <th>Countdown</th>
+                <th>Countdown 2</th>
                 <th>Period</th>
                 <th>Algorithm</th>
                 <th>UTC Time</th>
@@ -51,6 +52,9 @@
                         <td>@entry.Totp6</td>
                         <td>@entry.Totp8</td>
                         <td>@entry.Countdown</td>
+                        <td>
+                            <ProgressCircle DisplayValue="@((entry.Countdown - 1).ToString())" Value="@(entry.Period - entry.Countdown + 1)" Max="@entry.Period"></ProgressCircle>
+                        </td>
                         <td>@period</td>
                         <td>@entry.Algorithm.ToString()</td>
                         <td>@(DateTimeOffset.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"))</td>

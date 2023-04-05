@@ -147,3 +147,22 @@ main[b-yeczvzalcn] {
         display: block;
     }
 }
+/* /Shared/ProgressCircle.razor.rz.scp.css */
+div.progress-circle[b-l780mju9jo] {
+    display: flex;
+    aspect-ratio: 1/1;
+    height: 100%;
+    border-radius: 50%;
+}
+
+    div.progress-circle[b-l780mju9jo]::after {
+        content: attr(display-value);
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        background: white;
+        width: 100%;
+        margin: 10%;
+        border-radius: 50%;
+    }

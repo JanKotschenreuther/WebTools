@@ -1,0 +1,61 @@
+﻿@page "/jwt"
+@using System.Text;
+
+<PageTitle>Jwt</PageTitle>
+
+<div>
+    <InputTextArea @bind-Value="@_jwtToken" cols="100"></InputTextArea>
+    <button @onclick="Decode">Decode</button>
+    <InputTextArea @bind-Value="@_header" cols="100" rows="10"></InputTextArea>
+    <InputTextArea @bind-Value="@_payload" cols="100" rows="10"></InputTextArea>
+</div>
+
+@code {
+    private string _jwtToken = String.Empty;
+    private string _header = String.Empty;
+    private string _payload = String.Empty;
+
+    private void Decode()
+    {
+        _header = String.Empty;
+        _payload = String.Empty;
+
+        var tokenParts = this._jwtToken?.Split(".");
+        var encodedHeader = tokenParts?.FirstOrDefault();
+        var encodedPayload = tokenParts?.Skip(1).FirstOrDefault();
+
+        if (String.IsNullOrWhiteSpace(encodedHeader) == false)
+        {
+            while (encodedHeader.Length % 4 != 0)
+            {
+                encodedHeader += "=";
+            }
+
+            var base64Bytes = Convert.FromBase64String(encodedHeader);
+            var header = Encoding.UTF8.GetString(base64Bytes);
+
+            var deserialized = System.Text.Json.JsonSerializer.Deserialize<object>(header);
+            _header = System.Text.Json.JsonSerializer.Serialize(deserialized, new System.Text.Json.JsonSerializerOptions()
+                {
+                    WriteIndented = true,
+                });
+        }
+
+        if (String.IsNullOrWhiteSpace(encodedPayload) == false)
+        {
+            while (encodedPayload.Length % 4 != 0)
+            {
+                encodedPayload += "=";
+            }
+
+            var base64Bytes = Convert.FromBase64String(encodedPayload);
+            var payload = Encoding.UTF8.GetString(base64Bytes);
+
+            var deserialized = System.Text.Json.JsonSerializer.Deserialize<object>(payload);
+            _payload = System.Text.Json.JsonSerializer.Serialize(deserialized, new System.Text.Json.JsonSerializerOptions()
+                {
+                    WriteIndented = true,
+                });
+        }
+    }
+}

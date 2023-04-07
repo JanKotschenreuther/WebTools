@@ -33,7 +33,13 @@
 
     public void Decode()
     {
-        var base64Bytes = Convert.FromBase64String(this._base64);
+        var base64 = this._base64;
+        while (base64.Length % 4 != 0)
+        {
+            base64 += "=";
+        }
+
+        var base64Bytes = Convert.FromBase64String(base64);
         var selectedEncoding = Encoding.GetEncoding(this._selectedEncodingCodePage);
         this._clearText = selectedEncoding.GetString(base64Bytes);
     }

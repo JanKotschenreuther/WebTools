@@ -31,6 +31,8 @@ jobs:
       run: sed -i 's/<base href="\/" \/>/<base href="\/WebTools\/" \/>/g' WebTools/bin/Release/net7.0/publish/wwwroot/index.html
     - name: Add link to favicon.png
       run: sed -i '\|<base href="\/WebTools\/" \/>|a\    <link rel="shortcut icon" href=".\/favicon.png">' WebTools/bin/Release/net7.0/publish/wwwroot/index.html
+    - name: Copy index.html to 404.html
+      run: cp WebTools/bin/Release/net7.0/publish/wwwroot/index.html WebTools/bin/Release/net7.0/publish/wwwroot/404.html
     - name: Add .nojekyll file
       run: touch WebTools/bin/Release/net7.0/publish/wwwroot/.nojekyll
     - name: Deploy to GitHub Pages

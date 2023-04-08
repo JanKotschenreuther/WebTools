@@ -1,18 +1,39 @@
-﻿div.progress-circle {
-    display: flex;
-    aspect-ratio: 1/1;
+﻿div[progress-circle-container] {
     height: 100%;
-    border-radius: 50%;
+    position: relative;
 }
 
-    div.progress-circle::after {
-        content: attr(display-value);
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        text-align: center;
-        background: white;
+    div[progress-circle-container]::after {
+        content: attr(progress-circle-text);
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        margin: 10%;
-        border-radius: 50%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
     }
+
+svg[progress-circle] {
+    width: 100px;
+    height: 100px;
+    transform-origin: 50% 50%;
+    transform: rotate(-90deg);
+}
+
+    svg[progress-circle] circle {
+        fill: transparent;
+        stroke-width: 10%;
+    }
+
+        svg[progress-circle] circle:first-child {
+            stroke: lightgray;
+        }
+
+        svg[progress-circle] circle:last-child {
+            stroke: dodgerblue;
+            stroke-dasharray: calc(var(--math-pi) * var(--progress-circle-value, 0%) * 0.8), 500%;
+            transition: stroke-dasharray 1s linear;
+        }

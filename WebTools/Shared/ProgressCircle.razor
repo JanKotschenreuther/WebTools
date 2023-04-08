@@ -1,6 +1,8 @@
-﻿<div class="progress-circle" 
-     display-value="@DisplayValue"
-     style="@(("background: conic-gradient(lightgray " + _value + "%, dodgerblue 0deg);"))">
+﻿<div progress-circle-container progress-circle-text="@Text">
+    <svg progress-circle>
+        <circle class="svg-indicator-track" cx="50%" cy="50%" r="40%" />
+        <circle class="svg-indicator-indication" cx="50%" cy="50%" r="40%" style="@("--progress-circle-value: " + _value + "%")" />
+    </svg>
 </div>
 
 @code {
@@ -9,7 +11,7 @@
     [Parameter]
     public long Value { get; set; } = 50;
     [Parameter]
-    public string DisplayValue { get; set; } = String.Empty;
+    public string Text { get; set; } = String.Empty;
     [Parameter]
     public long Min { get; set; } = 0;
     [Parameter]

@@ -53,7 +53,12 @@
                         <td>@entry.Totp8</td>
                         <td>@entry.Countdown</td>
                         <td>
-                            <ProgressCircle DisplayValue="@((entry.Countdown - 1).ToString())" Value="@(entry.Period - entry.Countdown + 1)" Max="@entry.Period"></ProgressCircle>
+                            <ProgressCircle 
+                                Min="1" 
+                                Max="@entry.Period"
+                                Value="@(entry.Period - entry.Countdown + 1)" 
+                                Text="@(entry.Countdown.ToString())">
+                            </ProgressCircle>
                         </td>
                         <td>@period</td>
                         <td>@entry.Algorithm.ToString()</td>

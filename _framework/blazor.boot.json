@@ -51,10 +51,10 @@
       "System.Security.Cryptography.Primitives.dll": "sha256-egoxEZMLC+PjSwdIpC845GiU0svi+I6AVJNSTmjLkpc=",
       "System.Text.Encodings.Web.dll": "sha256-UEjjfXMneHaPyug9JKLS2e67fa3O+GSBW4uCeGJTTLk=",
       "System.Text.Json.dll": "sha256-dw9Wlr\/tXErLDtweGBnEWGGEDJZj8Y8DZSn0CzZkioY=",
-      "System.Text.RegularExpressions.dll": "sha256-3CJOZFozTw5rK3f1q93+3vFsUXOpnL64AplxG+U1oNE=",
+      "System.Text.RegularExpressions.dll": "sha256-8lqIEG3GdKPdbyVBFhbfrqxqjHByqc9AsDbc0SCmZNg=",
       "System.Threading.dll": "sha256-Pzz0b\/YJPqkVwuI8Vsrc01F4zJuDo8dn1SvTrY0mmC4=",
       "System.Web.HttpUtility.dll": "sha256-D2mVosuxRX\/dNg5waxEOP+RVDZT3+qwp1BvOb37\/S1U=",
-      "WebTools.dll": "sha256-y\/tFaLkFfzLiFIe4f\/0lfEtjFAxcWOJXJaQPVZ2kofo=",
+      "WebTools.dll": "sha256-\/5rihxYsRgs4wvEevmbwFQo5X8+15fl4LqJvo8VLSmA=",
       "zxing.dll": "sha256-jSFs1kEwsLRUjHGAlatJX+N\/SU4fGJ5Q1v1zHLPDSek=",
       "ZXing.SkiaSharp.dll": "sha256-unCUVCmCCKj5hJBzSV3KcREXU613h7JmQ1utKlSm\/f4="
     },

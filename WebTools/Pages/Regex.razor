@@ -1,0 +1,49 @@
+﻿@page "/regex"
+@using System.Text.RegularExpressions;
+
+<PageTitle>Regex</PageTitle>
+
+<div>
+    <InputTextArea @bind-Value="_pattern" cols="100"></InputTextArea>
+    <InputTextArea @bind-Value="_inputText" cols="100" rows="10"></InputTextArea>
+    <div>
+        <button @onclick="FindMatches">Find Matches</button>
+    </div>
+    @if (_matchCollection != null)
+    {
+        <label>Matches: @_matchCollection.Count</label>
+        <table>
+            <tr>
+                <th>Index</th>
+                <th>Value</th>
+                <th>Length</th>
+                <th>Groups</th>
+            </tr>
+            @foreach (Match match in _matchCollection)
+            {
+                <tr>
+                    <td>@match.Index</td>
+                    <td>@match.Value</td>
+                    <td>@match.Length</td>
+                    <td>@(String.Join("; ", match.Groups.Cast<Group>().Skip(1).Where(x => x.Success).Select(x => x.Name)))</td>
+                </tr>
+            }
+        </table>
+    }
+</div>
+
+@code {
+    private const string _loremIpsum = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
+
+    private string _pattern = @"(?<prim>\w*cus\w*)|(?<sec>\w*ore\w*)";
+    private string _inputText = _loremIpsum;
+    private string _outputMatches = String.Empty;
+    private MatchCollection? _matchCollection;
+
+    private void FindMatches()
+    {
+        var regex = new System.Text.RegularExpressions.Regex(this._pattern);
+        this._matchCollection = regex.Matches(this._inputText);
+    }
+
+}

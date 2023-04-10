@@ -103,3 +103,8 @@ a, .btn-link {
     .loading-progress-text:after {
         content: var(--blazor-load-percentage-text, "Loading");
     }
+
+.nav-link [class^="bi-"] {
+    font-size: 1.1rem;
+    width: 2rem;
+}

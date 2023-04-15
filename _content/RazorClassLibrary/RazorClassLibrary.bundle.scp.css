@@ -1,0 +1,40 @@
+/* _content/RazorClassLibrary/Components/ProgressCircle.razor.rz.scp.css */
+div[progress-circle-container][b-utfavvpe28] {
+    height: 100%;
+    position: relative;
+}
+
+    div[progress-circle-container][b-utfavvpe28]::after {
+        content: attr(progress-circle-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+
+svg[progress-circle][b-utfavvpe28] {
+    width: 100px;
+    height: 100px;
+    transform-origin: 50% 50%;
+    transform: rotate(-90deg);
+}
+
+    svg[progress-circle] circle[b-utfavvpe28] {
+        fill: transparent;
+        stroke-width: 10%;
+    }
+
+        svg[progress-circle] circle:first-child[b-utfavvpe28] {
+            stroke: lightgray;
+        }
+
+        svg[progress-circle] circle:last-child[b-utfavvpe28] {
+            stroke: dodgerblue;
+            stroke-dasharray: calc(var(--math-pi) * var(--progress-circle-value, 0%) * 0.8), 500%;
+            transition: stroke-dasharray 1s linear;
+        }

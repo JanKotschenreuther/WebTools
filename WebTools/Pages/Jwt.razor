@@ -2,12 +2,22 @@
 @using System.Text;
 
 <PageTitle>Jwt</PageTitle>
+<h3>Jwt (JSON Web Token)</h3>
 
 <div>
-    <InputTextArea @bind-Value="@_jwtToken" cols="100"></InputTextArea>
-    <button @onclick="Decode">Decode</button>
-    <InputTextArea @bind-Value="@_header" cols="100" rows="10"></InputTextArea>
-    <InputTextArea @bind-Value="@_payload" cols="100" rows="10"></InputTextArea>
+    <div class="form-group">
+        <label>Encoded JSON Web Token</label>
+        <InputTextArea @bind-Value="_jwtToken" class="form-control" placeholder="JSON Web Token" rows="5"></InputTextArea>
+    </div>
+    <button @onclick="Decode" class="btn btn-primary my-1">Decode</button>
+    <div class="form-group">
+        <label>Decoded Header</label>
+        <InputTextArea @bind-Value="_header" class="form-control" placeholder="Header" rows="10"></InputTextArea>
+    </div>
+    <div class="form-group">
+        <label>Decoded Payload</label>
+        <InputTextArea @bind-Value="_payload" class="form-control" placeholder="Payload" rows="10"></InputTextArea>
+    </div>
 </div>
 
 @code {

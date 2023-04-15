@@ -3,21 +3,39 @@
 @using System.Web;
 
 <PageTitle>Url</PageTitle>
+<h3>Url</h3>
 
 <div>
-    <textarea @bind="_decodedUrl" placeholder="Decoded" cols="100" />
-    <textarea @bind="_encodedUrl" placeholder="Encoded" cols="100" />
+    <div class="form-group">
+        <label>Decoded Url</label>
+        <InputTextArea @bind-Value="_decodedUrl" class="form-control" placeholder="Decoded Url" rows="10"></InputTextArea>
+    </div>
+    <div class="form-group">
+        <label>Encoded Url</label>
+        <InputTextArea @bind-Value="_encodedUrl" class="form-control" placeholder="Encoded Url" rows="10"></InputTextArea>
+    </div>
+    <div class="row">
+        <div class="col-auto my-1">
+            <button @onclick="Encode" class="btn btn-primary">Encode</button>
+        </div>
+        <div class="col-auto my-1">
+            <button @onclick="Decode" class="btn btn-primary">Decode</button>
+        </div>
+        <div class="form-group col-auto my-1">
+            @*<label>Encoding</label>*@
+            <InputSelect @bind-Value="_selectedEncodingCodePage" class="form-control">
+                @foreach (var encoding in _encodings)
+                {
+                    <option value="@encoding.CodePage">@encoding.WebName</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-check col my-1">
+            <label class="form-check-label">Use +</label>
+            <InputCheckbox @bind-Value="_usePlus" class="form-check-input"></InputCheckbox>
+        </div>
+    </div>
     <div>
-        <button @onclick="Encode">Encode</button>
-        <button @onclick="Decode">Decode</button>
-        <select @bind="_selectedEncodingCodePage">
-            @foreach (var encoding in _encodings)
-            {
-                <option value="@encoding.CodePage">@encoding.WebName</option>
-            }
-        </select>
-        <label for="usePlus">Use +</label>
-        <input @bind="_usePlus" name="usePlus" type="checkbox"/>
     </div>
 </div>
 

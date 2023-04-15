@@ -5,68 +5,99 @@
 @using ZXing.SkiaSharp;
 
 <PageTitle>Totp</PageTitle>
-<h3>Totp</h3>
+<h3>Totp (Time-based One Time Passwords)</h3>
 
 <div>
-    <textarea @bind="_secret" placeholder="secret" cols="100"></textarea>
-    <div>
-        <InputText @bind-Value="_user" DisplayName="User"></InputText>
-        <InputText @bind-Value="_issuer" DisplayName="Issuer"></InputText>
-        <InputSelect @bind-Value="_algorithm" DisplayName="Algorithm">
-            @foreach (var alg in Enum.GetValues<Algorithm>())
-            {
-                <option value="@alg">@alg</option>
-            }
-        </InputSelect>
-        <InputSelect @bind-Value="_digits" DisplayName="Digits">
-            @foreach (var dig in Enum.GetValues<Digits>())
-            {
-                <option value="@dig">@((int)dig)</option>
-            }
-        </InputSelect>
-        <InputNumber @bind-Value="_period" DisplayName="Period"></InputNumber>
-        <InputFile OnChange="FileChangeAsync"></InputFile>
+    <div class="form-group">
+        <label>QR Code .png file</label>
+        <InputFile OnChange="FileChangeAsync" class="form-control-file"></InputFile>
     </div>
-    <div>
-        <InputTextArea @bind-Value="_uri" DisplayName="QR Code URI" cols="100"></InputTextArea>
+    <div class="row">
+        <div class="form-group col">
+            <label>User</label>
+            <InputText @bind-Value="_user" class="form-control"></InputText>
+        </div>
+        <div class="form-group col">
+            <label>Issuer</label>
+            <InputText @bind-Value="_issuer" class="form-control"></InputText>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Secret</label>
+        <InputTextArea @bind-Value="_secret" class="form-control"></InputTextArea>
+    </div>
+    <div class="row">
+        <div class="form-group col">
+            <label>Algorithm</label>
+            <InputSelect @bind-Value="_algorithm" class="form-control">
+                @foreach (var alg in Enum.GetValues<Algorithm>())
+                {
+                    <option value="@alg">@alg</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group col">
+            <label>Digits</label>
+            <InputSelect @bind-Value="_digits" class="form-control">
+                @foreach (var dig in Enum.GetValues<Digits>())
+                {
+                    <option value="@dig">@((int)dig)</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group col">
+            <label>Period</label>
+            <InputNumber @bind-Value="_period" class="form-control"></InputNumber>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>QR Code URI</label>
+        <InputTextArea @bind-Value="_uri" class="form-control" readonly></InputTextArea>
+    </div>
+    <div class="form-group">
         <Barcode @ref="_barcode" TextToEncode="@_uri" Format="BarcodeFormat.QR_CODE" Height="200" Width="200"></Barcode>
     </div>
+
     <div>
-        <table>
-            <tr>
-                <th>TOTP 6</th>
-                <th>TOTP 8</th>
-                <th>Countdown</th>
-                <th>Countdown 2</th>
-                <th>Period</th>
-                <th>Algorithm</th>
-                <th>UTC Time</th>
-                <th>Time (sec)</th>
-            </tr>
-            @foreach (var group in _entries.GroupBy(e => e.Period))
-            {
-                var period = @group.Key;
-                foreach (var entry in group.ToArray())
+        <table class="table table-hover table-sm">
+            <caption>Authenticator examples</caption>
+            <thead>
+                <tr>
+                    <th scope="col">TOTP 6</th>
+                    <th scope="col">TOTP 8</th>
+                    <th scope="col">Countdown</th>
+                    <th scope="col">Countdown 2</th>
+                    <th scope="col">Period</th>
+                    <th scope="col">Algorithm</th>
+                    <th scope="col">UTC Time</th>
+                    <th scope="col">Time (sec)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var group in _entries.GroupBy(e => e.Period))
                 {
-                    <tr>
-                        <td>@entry.Totp6</td>
-                        <td>@entry.Totp8</td>
-                        <td>@entry.Countdown</td>
-                        <td>
-                            <ProgressCircle 
-                                Min="1" 
-                                Max="@entry.Period"
-                                Value="@(entry.Period - entry.Countdown + 1)" 
-                                Text="@(entry.Countdown.ToString())">
-                            </ProgressCircle>
-                        </td>
-                        <td>@period</td>
-                        <td>@entry.Algorithm.ToString()</td>
-                        <td>@(DateTimeOffset.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"))</td>
-                        <td>@(DateTimeOffset.UtcNow.ToUnixTimeSeconds())</td>
-                    </tr>
+                    var period = @group.Key;
+                    foreach (var entry in group.ToArray())
+                    {
+                        <tr>
+                            <td>@entry.Totp6</td>
+                            <td>@entry.Totp8</td>
+                            <td>@entry.Countdown</td>
+                            <td>
+                                <ProgressCircle Min="1"
+                                        Max="@entry.Period"
+                                        Value="@(entry.Period - entry.Countdown + 1)"
+                                        Text="@(entry.Countdown.ToString())">
+                                </ProgressCircle>
+                            </td>
+                            <td>@period</td>
+                            <td>@entry.Algorithm.ToString()</td>
+                            <td>@(DateTimeOffset.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"))</td>
+                            <td>@(DateTimeOffset.UtcNow.ToUnixTimeSeconds())</td>
+                        </tr>
+                    }
                 }
-            }
+            </tbody>
         </table>
     </div>
 </div>
@@ -220,7 +251,7 @@
             _issuer = issuer ?? String.Empty;
             _algorithm = isAlgEnum ? algorithmEnum : Algorithm.SHA1;
             _digits = digitEnum ?? Digits.digits_6;
-            _period = isPeriodNum? periodNum: 30;
+            _period = isPeriodNum ? periodNum : 30;
             _uri = uri.ToString();
             this._barcode?.Rerender();
 

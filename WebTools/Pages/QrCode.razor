@@ -4,26 +4,36 @@
 @using ZXing;
 @using ZXing.SkiaSharp;
 
-<PageTitle>QrCode</PageTitle>
+<PageTitle>QR-Code</PageTitle>
+<h3>QR-Code</h3>
 
 <div>
-    <textarea @bind="_clearText" placeholder="clear text" cols="100" />
-    <div>
-        <button @onclick="Encode">Encode</button>
-        <input type="range" name="qrCodeSize" on @bind="_qrCodeSize" @oninput="SetSize" min="100" max="1000" step="50" />
-        <label for="qrCodeSize">@_qrCodeSize px</label>
+    <div class="form-group">
+        <label>Clear Text</label>
+        <InputTextArea @bind-Value="_clearText" class="form-control" placeholder="Clear Text" rows="5"></InputTextArea>
+    </div>
+    <div class="row">
+        <div class="col-auto my-1">
+            <button @onclick="Encode" class="btn btn-primary">Encode</button>
+        </div>
+        <div class="form-group col my-1">
+            <input type="range" name="qrCodeSize" on @bind="_qrCodeSize" @oninput="SetSize" min="100" max="1000" step="50" />
+            <label for="qrCodeSize">@_qrCodeSize px</label>
+        </div>
     </div>
     <div>
         <Barcode @ref="_barcode" TextToEncode="@_clearText" Format="BarcodeFormat.QR_CODE" Height="@_qrCodeSize" Width="@_qrCodeSize"></Barcode>
     </div>
-    <div>
-        <InputFile OnChange="FileChangeAsync"></InputFile>
+    <div class="form-group">
+        <label>QR Code .png file</label>
+        <InputFile OnChange="FileChangeAsync" class="form-control-file"></InputFile>
     </div>
     <div>
         <SKCanvasView @ref="_canvasView" OnPaintSurface="PaintSurface" width="@(_bitmap?.Width ?? 0)" height="@(_bitmap?.Height ?? 0)"></SKCanvasView>
     </div>
-    <div>
-        <textarea @bind="_decodedText" placeholder="Decoded" cols="100" />
+    <div class="form-group">
+        <label>Decoded Text</label>
+        <InputTextArea @bind-Value="_decodedText" class="form-control" placeholder="Decoded Text" rows="5"></InputTextArea>
     </div>
 </div>
 

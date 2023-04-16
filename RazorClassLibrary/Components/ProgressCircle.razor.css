@@ -1,6 +1,8 @@
 ﻿div[progress-circle-container] {
     --size: 100px;
-    position: relative;    
+    --progress-color-bg: lightgray;
+    --progress-color: dodgerblue;
+    position: relative;
 }
 
     div[progress-circle-container]::after {
@@ -29,11 +31,11 @@ svg[progress-circle] {
     }
 
         svg[progress-circle] circle:first-child {
-            stroke: lightgray;
+            stroke: var(--progress-color-bg);
         }
 
         svg[progress-circle] circle:last-child {
-            stroke: dodgerblue;
+            stroke: var(--progress-color);
             stroke-dasharray: calc(var(--math-pi) * var(--progress-circle-value, 0%) * 0.8), 500%;
             transition: stroke-dasharray 1s linear;
         }

@@ -1,6 +1,6 @@
 ﻿div[progress-circle-container] {
-    height: 100%;
-    position: relative;
+    --size: 100px;
+    position: relative;    
 }
 
     div[progress-circle-container]::after {
@@ -8,8 +8,8 @@
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+        height: var(--size);
+        width: var(--size);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -17,8 +17,8 @@
     }
 
 svg[progress-circle] {
-    width: 100px;
-    height: 100px;
+    width: var(--size);
+    height: var(--size);
     transform-origin: 50% 50%;
     transform: rotate(-90deg);
 }

@@ -1,0 +1,3 @@
+﻿::deep div[progress-circle-container] {
+    --size: 50px;
+}

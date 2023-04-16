@@ -15,16 +15,16 @@
     <div class="row">
         <div class="form-group col">
             <label>User</label>
-            <InputText @bind-Value="_user" class="form-control"></InputText>
+            <InputText @bind-Value="_user" class="form-control" placeholder="User"></InputText>
         </div>
         <div class="form-group col">
             <label>Issuer</label>
-            <InputText @bind-Value="_issuer" class="form-control"></InputText>
+            <InputText @bind-Value="_issuer" class="form-control" placeholder="Issuer"></InputText>
         </div>
     </div>
     <div class="form-group">
         <label>Secret</label>
-        <InputTextArea @bind-Value="_secret" class="form-control"></InputTextArea>
+        <InputTextArea @bind-Value="_secret" class="form-control" placeholder="Secret"></InputTextArea>
     </div>
     <div class="row">
         <div class="form-group col">
@@ -63,12 +63,11 @@
             <caption>Authenticator examples</caption>
             <thead>
                 <tr>
+                    <th scope="col">Countdown</th>
                     <th scope="col">TOTP 6</th>
                     <th scope="col">TOTP 8</th>
-                    <th scope="col">Countdown</th>
-                    <th scope="col">Countdown 2</th>
-                    <th scope="col">Period</th>
                     <th scope="col">Algorithm</th>
+                    <th scope="col">Period</th>
                     <th scope="col">UTC Time</th>
                     <th scope="col">Time (sec)</th>
                 </tr>
@@ -80,9 +79,6 @@
                     foreach (var entry in group.ToArray())
                     {
                         <tr>
-                            <td>@entry.Totp6</td>
-                            <td>@entry.Totp8</td>
-                            <td>@entry.Countdown</td>
                             <td>
                                 <ProgressCircle Min="1"
                                         Max="@entry.Period"
@@ -90,8 +86,10 @@
                                         Text="@(entry.Countdown.ToString())">
                                 </ProgressCircle>
                             </td>
-                            <td>@period</td>
+                            <td class="text-info fw-bold">@entry.Totp6</td>
+                            <td class="text-info fw-bold">@entry.Totp8</td>
                             <td>@entry.Algorithm.ToString()</td>
+                            <td>@period</td>
                             <td>@(DateTimeOffset.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"))</td>
                             <td>@(DateTimeOffset.UtcNow.ToUnixTimeSeconds())</td>
                         </tr>

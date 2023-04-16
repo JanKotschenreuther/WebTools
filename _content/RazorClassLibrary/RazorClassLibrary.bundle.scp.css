@@ -1,7 +1,9 @@
 /* _content/RazorClassLibrary/Components/ProgressCircle.razor.rz.scp.css */
 div[progress-circle-container][b-utfavvpe28] {
     --size: 100px;
-    position: relative;    
+    --progress-color-bg: lightgray;
+    --progress-color: dodgerblue;
+    position: relative;
 }
 
     div[progress-circle-container][b-utfavvpe28]::after {
@@ -30,11 +32,11 @@ svg[progress-circle][b-utfavvpe28] {
     }
 
         svg[progress-circle] circle:first-child[b-utfavvpe28] {
-            stroke: lightgray;
+            stroke: var(--progress-color-bg);
         }
 
         svg[progress-circle] circle:last-child[b-utfavvpe28] {
-            stroke: dodgerblue;
+            stroke: var(--progress-color);
             stroke-dasharray: calc(var(--math-pi) * var(--progress-circle-value, 0%) * 0.8), 500%;
             transition: stroke-dasharray 1s linear;
         }

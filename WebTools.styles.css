@@ -1,5 +1,9 @@
 @import '_content/RazorClassLibrary/RazorClassLibrary.bundle.scp.css';
 
+/* /Pages/Totp.razor.rz.scp.css */
+[b-w9vuzkq7wn] div[progress-circle-container] {
+    --size: 50px;
+}
 /* /Shared/MainLayout.razor.rz.scp.css */
 .page[b-yeczvzalcn] {
     position: relative;

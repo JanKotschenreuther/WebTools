@@ -41,4 +41,4 @@ jobs:
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.5.0
       with:
-       folder: WebTools/bin/Release/$DOTNET_TARGET_FRAMEWORK/publish/wwwroot
+       folder: WebTools/bin/Release/${{ DOTNET_TARGET_FRAMEWORK }}/publish/wwwroot

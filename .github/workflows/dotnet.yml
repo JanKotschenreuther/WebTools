@@ -39,6 +39,6 @@ jobs:
     - name: Add .nojekyll file
       run: touch WebTools/bin/Release/$DOTNET_TARGET_FRAMEWORK/publish/wwwroot/.nojekyll
     - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4.4.0
+      uses: JamesIves/github-pages-deploy-action@v4.5.0
       with:
        folder: WebTools/bin/Release/$DOTNET_TARGET_FRAMEWORK/publish/wwwroot

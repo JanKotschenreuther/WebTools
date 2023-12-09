@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  DOTNET_TARGET_FRAMEWORK: net8.0
+
 jobs:
   build:
 
@@ -28,14 +31,14 @@ jobs:
     - name: Publish
       run: dotnet publish -c Release
     - name: Change base-tag in index.html from "/" to "WebTools"
-      run: sed -i 's/<base href="\/" \/>/<base href="\/WebTools\/" \/>/g' WebTools/bin/Release/net7.0/publish/wwwroot/index.html
+      run: sed -i 's/<base href="\/" \/>/<base href="\/WebTools\/" \/>/g' WebTools/bin/Release/$DOTNET_TARGET_FRAMEWORK/publish/wwwroot/index.html
     - name: Add link to favicon.png
-      run: sed -i '\|<base href="\/WebTools\/" \/>|a\    <link rel="shortcut icon" href=".\/favicon.png">' WebTools/bin/Release/net7.0/publish/wwwroot/index.html
+      run: sed -i '\|<base href="\/WebTools\/" \/>|a\    <link rel="shortcut icon" href=".\/favicon.png">' WebTools/bin/Release/$DOTNET_TARGET_FRAMEWORK/publish/wwwroot/index.html
     - name: Copy index.html to 404.html
-      run: cp WebTools/bin/Release/net7.0/publish/wwwroot/index.html WebTools/bin/Release/net7.0/publish/wwwroot/404.html
+      run: cp WebTools/bin/Release/$DOTNET_TARGET_FRAMEWORK/publish/wwwroot/index.html WebTools/bin/Release/$DOTNET_TARGET_FRAMEWORK/publish/wwwroot/404.html
     - name: Add .nojekyll file
-      run: touch WebTools/bin/Release/net7.0/publish/wwwroot/.nojekyll
+      run: touch WebTools/bin/Release/$DOTNET_TARGET_FRAMEWORK/publish/wwwroot/.nojekyll
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.4.0
       with:
-       folder: WebTools/bin/Release/net8.0/publish/wwwroot
+       folder: WebTools/bin/Release/$DOTNET_TARGET_FRAMEWORK/publish/wwwroot

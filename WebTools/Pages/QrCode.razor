@@ -6,10 +6,11 @@
 
 <PageTitle>QR-Code</PageTitle>
 <h3>QR-Code</h3>
+<hr/>
 
 <div>
     <div class="form-group">
-        <label>Clear Text</label>
+        <label class="fw-bold">Clear Text</label>
         <InputTextArea @bind-Value="_clearText" class="form-control" placeholder="Clear Text" rows="5"></InputTextArea>
     </div>
     <div class="row">
@@ -25,15 +26,15 @@
         <Barcode @ref="_barcode" TextToEncode="@_clearText" Format="BarcodeFormat.QR_CODE" Height="@_qrCodeSize" Width="@_qrCodeSize"></Barcode>
     </div>
     <div class="form-group">
-        <label>QR Code .png file</label>
+        <label class="fw-bold">Decoded Text</label>
+        <InputTextArea @bind-Value="_decodedText" class="form-control" placeholder="Decoded Text" rows="5"></InputTextArea>
+    </div>
+    <div class="row">
+        <label class="fw-bold">QR Code .png file</label>
         <InputFile OnChange="FileChangeAsync" class="form-control-file"></InputFile>
     </div>
     <div>
         <SKCanvasView @ref="_canvasView" OnPaintSurface="PaintSurface" width="@(_bitmap?.Width ?? 0)" height="@(_bitmap?.Height ?? 0)"></SKCanvasView>
-    </div>
-    <div class="form-group">
-        <label>Decoded Text</label>
-        <InputTextArea @bind-Value="_decodedText" class="form-control" placeholder="Decoded Text" rows="5"></InputTextArea>
     </div>
 </div>
 

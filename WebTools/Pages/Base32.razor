@@ -3,20 +3,23 @@
 
 <PageTitle>Base32</PageTitle>
 <h3>Base32</h3>
+<hr/>
 
 <div>
     <div class="form-group">
-        <label>Clear Text</label>
+        <label class="fw-bold">Clear Text</label>
         <InputTextArea @bind-Value="_clearText" class="form-control" placeholder="Clear Text" rows="10"></InputTextArea>
-    </div>
-    <div class="form-group">
-        <label>Base32 Encoded Text</label>
-        <InputTextArea @bind-Value="_base32" class="form-control" placeholder="Base32 Encoded Text" rows="10"></InputTextArea>
     </div>
     <div class="row">
         <div class="col-auto my-1">
             <button @onclick="Encode" class="btn btn-primary">Encode</button>
         </div>
+    </div>
+    <div class="form-group">
+        <label class="fw-bold">Base32 Encoded Text</label>
+        <InputTextArea @bind-Value="_base32" class="form-control" placeholder="Base32 Encoded Text" rows="10"></InputTextArea>
+    </div>
+    <div class="row">
         <div class="col-auto my-1">
             <button @onclick="Decode" class="btn btn-primary">Decode</button>
         </div>

@@ -3,19 +3,21 @@
 
 <PageTitle>Regex</PageTitle>
 <h3>Regex (Regular Expressions)</h3>
+<hr/>
 
 <div>
     <div class="form-group">
-        <label>Pattern</label>
+        <label class="fw-bold">Pattern</label>
         <InputTextArea @bind-Value="_pattern" class="form-control" placeholder="Pattern"></InputTextArea>
     </div>
     <div class="form-group">
-        <label>Text</label>
+        <label class="fw-bold">Text</label>
         <InputTextArea @bind-Value="_inputText" class="form-control" rows="10" placeholder="Text"></InputTextArea>
     </div>
     <button @onclick="FindMatches" class="btn btn-primary my-1">Find Matches</button>
 
     <div>
+        <label class="fw-bold">Results</label>
         @if (_matchCollection != null)
         {
             <table class="table table-hover table-sm">

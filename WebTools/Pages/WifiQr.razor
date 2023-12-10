@@ -1,0 +1,79 @@
+﻿@page "/wifiqr"
+@using System.Text
+@using SkiaSharp
+@using ZXing
+@using ZXing.SkiaSharp
+
+<PageTitle>WifiQr</PageTitle>
+<h3>Wifi QR-Code</h3>
+<hr/>
+
+<div>
+    <div class="row">
+        <div class="form-group col">
+            <label>SSID (Network Name)</label>
+            <InputText @bind-Value="_networkSsid" class="form-control" placeholder="SSID"></InputText>
+        </div>
+        <div class="form-check col my-1">
+            <label class="form-check-label">Hidden</label>
+            <InputCheckbox @bind-Value="_isNetworkSsidHidden" class="form-check-input"></InputCheckbox>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col">
+            <label>Password</label>
+            <InputText @bind-Value="_password" class="form-control" placeholder="Password"></InputText>
+        </div>
+        <div class="form-group col">
+            <label>Encryption</label>
+            <InputSelect @bind-Value="_encryption" class="form-control">
+                @foreach (var enc in Enum.GetValues<WifiEncryption>())
+                {
+                    <option value="@enc">@enc</option>
+                }
+            </InputSelect>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Wifi config encoded for QR Code</label>
+        <InputTextArea @bind-Value="_wifiConfigString" class="form-control" readonly></InputTextArea>
+    </div>
+    <div>
+        <Barcode @ref="_barcode" TextToEncode="@_wifiConfigString" Format="BarcodeFormat.QR_CODE" Height="200" Width="200"></Barcode>
+    </div>
+</div>
+
+@code {
+    private WifiEncryption _encryption = WifiEncryption.WPA;
+    private string _networkSsid = String.Empty;
+    private string _password = String.Empty;
+    private bool _isNetworkSsidHidden = false;
+    private string _eapMethod = String.Empty;
+    private string _anonymousIdentity = String.Empty;
+    private string _identity = String.Empty;
+    private string _phase2Method = String.Empty;
+
+    private Barcode? _barcode;
+    private string _wifiConfigString = String.Empty;
+
+    private Timer? _timer;
+
+    protected override void OnParametersSet()
+    {
+        _wifiConfigString = WifiUtilities.EncodeWifiConfig(_encryption, _networkSsid, _password, _isNetworkSsidHidden);
+        _timer = new(OnTimer, null, 0, 1000);
+
+        base.OnParametersSet();
+    }
+
+    private void OnTimer(object? state)
+    {
+        var newWifiConfigString = WifiUtilities.EncodeWifiConfig(_encryption, _networkSsid, _password, _isNetworkSsidHidden);
+        if (_wifiConfigString != newWifiConfigString)
+        {
+            _wifiConfigString = newWifiConfigString;
+            this._barcode?.Rerender();
+            this.StateHasChanged();
+        }
+    }
+}

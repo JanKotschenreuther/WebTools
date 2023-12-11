@@ -38,8 +38,12 @@
         <label>Wifi config encoded for QR Code</label>
         <InputTextArea @bind-Value="_wifiConfigString" class="form-control" readonly></InputTextArea>
     </div>
+    <div class="form-group col my-1">
+        <input type="range" name="qrCodeSize" on @bind="_qrCodeSize" @oninput="SetSize" min="100" max="1000" step="50" />
+        <label for="qrCodeSize">@_qrCodeSize px</label>
+    </div>
     <div>
-        <Barcode @ref="_barcode" TextToEncode="@_wifiConfigString" Format="BarcodeFormat.QR_CODE" Height="200" Width="200"></Barcode>
+        <Barcode @ref="_barcode" TextToEncode="@_wifiConfigString" Format="BarcodeFormat.QR_CODE" Height="@_qrCodeSize" Width="@_qrCodeSize"></Barcode>
     </div>
 </div>
 
@@ -55,6 +59,7 @@
 
     private Barcode? _barcode;
     private string _wifiConfigString = String.Empty;
+    private int _qrCodeSize = 400;
 
     private Timer? _timer;
 
@@ -75,5 +80,10 @@
             this._barcode?.Rerender();
             this.StateHasChanged();
         }
+    }
+
+    private void SetSize(ChangeEventArgs e)
+    {
+        _qrCodeSize = Convert.ToInt32(e.Value);
     }
 }

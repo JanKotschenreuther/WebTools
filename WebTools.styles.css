@@ -5,7 +5,15 @@
     --size: 50px;
 }
 /* /Shared/MainLayout.razor.rz.scp.css */
-#sideMenu[b-yeczvzalcn] {
+.top-row[b-yeczvzalcn] {
+    height: 3.5rem;
+}
+
+.bottom-row[b-yeczvzalcn] {
+    height: calc(100% - 3.5rem);
+}
+
+#side-menu[b-yeczvzalcn] {
 }
 
 /* navigation styles */
@@ -137,19 +145,7 @@ main {
 }
 */
 /* /Shared/NavMenu.razor.rz.scp.css */
-/*.navbar-toggler {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.top-row {
-    height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
-}
-
-.navbar-brand {
-    font-size: 1.1rem;
-}
-
+/*
 .oi {
     width: 2rem;
     font-size: 1.1rem;

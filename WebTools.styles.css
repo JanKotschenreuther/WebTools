@@ -6,16 +6,11 @@
 }
 /* /Shared/MainLayout.razor.rz.scp.css */
 .top-row[b-yeczvzalcn] {
-    height: 3.5rem;
+    height: var(--top-row-height);
 }
 
 .bottom-row[b-yeczvzalcn] {
-    height: calc(100% - 3.5rem);
-}
-
-/* navigation styles */
-.navbar-toggler[b-yeczvzalcn] {
-    /*    background-color: rgba(255, 255, 255, 0.1);*/
+    height: calc(100% - var(--top-row-height));
 }
 
 .navbar-brand[b-yeczvzalcn] {
@@ -23,13 +18,13 @@
 }
 
 .nav-item[b-yeczvzalcn] {
-    width: 15rem;
+    width: var(--side-menu-width);
     font-size: 0.9rem;
     transition: 1s ease;
 }
 
 .collapsed .nav-item[b-yeczvzalcn] {
-    width: 4rem;
+    width: var(--side-menu-collapsed-width);
 }
 
 .nav-item-title[b-yeczvzalcn] {

@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 env:
-  DOTNET_TARGET_FRAMEWORK: net8.0
+  DOTNET_TARGET_FRAMEWORK: net9.0
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 9.0.x
     - name: Install Workload wasm-tools
       run: dotnet workload install wasm-tools
     - name: Restore dependencies
@@ -39,6 +39,6 @@ jobs:
     - name: Add .nojekyll file
       run: touch WebTools/bin/Release/$DOTNET_TARGET_FRAMEWORK/publish/wwwroot/.nojekyll
     - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4.5.0
+      uses: JamesIves/github-pages-deploy-action@v4.7.3
       with:
        folder: WebTools/bin/Release/${{ env.DOTNET_TARGET_FRAMEWORK }}/publish/wwwroot

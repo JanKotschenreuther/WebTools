@@ -8,16 +8,6 @@
     <nav class="top-row navbar navbar-dark bg-dark">
         <div class="container-fluid">
             <div class="hstack">
-                <button type="button" @onclick="OnToggleMenu" class="navbar-toggler mx-2">
-                    @if (isSideMenuCollapsed)
-                    {
-                        <span class="bi-chevron-right"></span>
-                    }
-                    else
-                    {
-                        <span class="bi-chevron-left"></span>
-                    }
-                </button>
                 <a class="navbar-brand" href="#">
                     <img src="favicon.png" alt="Logo" height="30" class="d-inline-block align-text-top" />
                     WebTools
@@ -33,6 +23,18 @@
         <nav
             class="side-menu full-height @(isSideMenuCollapsed ? "collapsed" : "") overflow-y-scroll navbar navbar-dark bg-dark text-bg-dark">
             <div class="nav flex-column flex-nowrap full-height">
+                <div class="nav-item" @onclick="OnToggleMenu">
+                    <NavLink class="nav-link">
+                        @if (isSideMenuCollapsed)
+                        {
+                            <span class="bi-chevron-right"></span>
+                        }
+                        else
+                        {
+                            <span class="bi-chevron-left"></span>
+                        }
+                    </NavLink>
+                </div>
                 <div class="nav-item">
                     <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                         <span class="bi-house-fill" aria-hidden="true"></span>

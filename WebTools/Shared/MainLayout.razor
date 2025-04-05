@@ -8,8 +8,15 @@
     <nav class="top-row navbar navbar-dark bg-dark">
         <div class="container-fluid">
             <div class="hstack">
-                <button title="Navigation menu" class="navbar-toggler mx-2" type="button" data-bs-toggle="collapse" data-bs-target="#side-menu" aria-controls="side-menu" aria-expanded="true" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                <button type="button" @onclick="OnToggleMenu" class="navbar-toggler mx-2">
+                    @if (isSideMenuCollapsed)
+                    {
+                        <span class="bi-chevron-right"></span>
+                    }
+                    else
+                    {
+                        <span class="bi-chevron-left"></span>
+                    }
                 </button>
                 <a class="navbar-brand" href="#">
                     <img src="favicon.png" alt="Logo" height="30" class="d-inline-block align-text-top" />
@@ -23,51 +30,61 @@
     </nav>
 
     <div class="bottom-row hstack full-height">
-        <nav id="side-menu" class="full-height overflow-y-scroll collapse-horizontal navbar navbar-dark bg-dark text-bg-dark show">
+        <nav
+            class="side-menu full-height @(isSideMenuCollapsed ? "collapsed" : "") overflow-y-scroll navbar navbar-dark bg-dark text-bg-dark">
             <div class="nav flex-column flex-nowrap full-height">
                 <div class="nav-item">
                     <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                        <span class="bi-house-fill" aria-hidden="true"></span> Home
+                        <span class="bi-house-fill" aria-hidden="true"></span>
+                        <span class="nav-item-title">Home</span>
                     </NavLink>
                 </div>
                 <div class="nav-item">
                     <NavLink class="nav-link" href="wifiqr">
-                        <span class="bi-wifi" aria-hidden="true"></span> WiFi QR
+                        <span class="bi-wifi" aria-hidden="true"></span>
+                        <span class="nav-item-title">WiFi QR</span>
                     </NavLink>
                 </div>
                 <div class="nav-item">
                     <NavLink class="nav-link" href="base32">
-                        <span class="bi-spellcheck" aria-hidden="true"></span> Base32
+                        <span class="bi-spellcheck" aria-hidden="true"></span>
+                        <span class="nav-item-title">Base32</span>
                     </NavLink>
                 </div>
                 <div class="nav-item">
                     <NavLink class="nav-link" href="base64">
-                        <span class="bi-spellcheck" aria-hidden="true"></span> Base64
+                        <span class="bi-spellcheck" aria-hidden="true"></span>
+                        <span class="nav-item-title">Base64</span>
                     </NavLink>
                 </div>
                 <div class="nav-item">
                     <NavLink class="nav-link" href="url">
-                        <span class="bi-link-45deg" aria-hidden="true"></span> Url
+                        <span class="bi-link-45deg" aria-hidden="true"></span>
+                        <span class="nav-item-title">Url</span>
                     </NavLink>
                 </div>
                 <div class="nav-item">
                     <NavLink class="nav-link" href="qrcode">
-                        <span class="bi-qr-code" aria-hidden="true"></span> QR-Code
+                        <span class="bi-qr-code" aria-hidden="true"></span>
+                        <span class="nav-item-title">QR-Code</span>
                     </NavLink>
                 </div>
                 <div class="nav-item">
                     <NavLink class="nav-link" href="jwt">
-                        <span class="bi-braces-asterisk" aria-hidden="true"></span> JWT
+                        <span class="bi-braces-asterisk" aria-hidden="true"></span>
+                        <span class="nav-item-title">JWT</span>
                     </NavLink>
                 </div>
                 <div class="nav-item">
                     <NavLink class="nav-link" href="regex">
-                        <span class="bi-regex" aria-hidden="true"></span> Regex
+                        <span class="bi-regex" aria-hidden="true"></span>
+                        <span class="nav-item-title">Regex</span>
                     </NavLink>
                 </div>
                 <div class="nav-item">
                     <NavLink class="nav-link" href="totp">
-                        <span class="bi-clock" aria-hidden="true"></span> Totp
+                        <span class="bi-clock" aria-hidden="true"></span>
+                        <span class="nav-item-title">Totp</span>
                     </NavLink>
                 </div>
             </div>
@@ -81,3 +98,12 @@
 
     </div>
 </div>
+
+@code {
+    private bool isSideMenuCollapsed = false;
+
+    private void OnToggleMenu()
+    {
+        isSideMenuCollapsed = !isSideMenuCollapsed;
+    }
+}
